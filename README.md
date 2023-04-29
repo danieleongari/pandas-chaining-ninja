@@ -1,4 +1,5 @@
 # Pandas Chaining Ninja
+![](image.png)
 
 ## What is the *Pandas Chaining* method?
 ```python
