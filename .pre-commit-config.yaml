@@ -4,13 +4,8 @@ repos:
 - repo: local
   hooks:
 
-  # yet another python formatter
-  - id: yapf 
-    name: yapf
-    entry: yapf
-    language: system
-    types: [python]
-    args: ["-i"]
+
+
 
   # collection of linters
   - id: prospector 
