@@ -26,3 +26,44 @@ to make sure the code is working with the lasest pandas version.
 
 ## Chunks of code
 
+### Read CSV
+You can start reading the CSV file already inside the chaining:
+```python
+df = (
+    pd.read_csv("data.csv")
+    .dosomeoperation()
+    .dosomeotheroperation()
+)
+```
+See `test_01`.
+
+### Add new columns
+You can add new columns to the dataframe with `assign`:
+```python
+(
+    df
+    .assign(new_column = lambda x: x["column1"] + x["column2"])
+    .assign(new_column2 = lambda x: x["column1"] + x["column2"])
+)
+```
+
+If you need to create a column with spaces in the name, you can use `assign` with a dictionary:
+```python
+(
+    df
+    .assign(**{"new column": lambda x: x["column1"] + x["column2"]})
+)
+```
+See `test_01`.
+
+### Display the dataframe within the chaining
+You can display the dataframe within the chaining with `pipe`:
+```python
+(
+    df
+    .pipe(lambda x: display(x) or df)
+    .dosomeoperation()
+    .dosomeotheroperation()
+)
+```
+See `test_02`.
