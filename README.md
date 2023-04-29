@@ -29,7 +29,7 @@ But there are also some downsides:
 1. Search what you need in this readme file
 2. Look for working examples in the `tests/` folders: you can get the output on your computer with `pytest -s`, or checking *Actions > Last Commit > Build > Run tests with pytest*
 3. Use GitHub search in repository to find the code you need: I'll try to use many keywords to make it easier to find
-3. Explore further `REFERENCES.md`
+3. Explore further [REFERENCES](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/REFERENCES.md)
 4. Open an issue or a pull request if you want to add any technique it was useful for you, to share
 
 The idea behind this repository is to share chunks of code that is easy to browse, and it is running tests via GitHub Actions 
