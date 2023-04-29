@@ -1,0 +1,21 @@
+max-line-length: 121
+
+ignore-paths:
+    None
+
+pylint:
+  run: true
+  disable:
+    - too-many-arguments
+    - too-many-arguments
+    - too-many-function-args
+    - too-many-locals
+
+pyflakes:
+  run: false
+
+pep8:
+  run: false
+
+mccabe:
+  run: false

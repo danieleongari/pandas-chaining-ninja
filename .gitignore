@@ -1,0 +1,4 @@
+*.py[cod]
+*.swp
+*.egg-info/
+*.DS_Store
