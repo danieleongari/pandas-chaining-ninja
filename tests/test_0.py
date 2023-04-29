@@ -40,10 +40,10 @@ def test_02():
     
     df = (
         pd.read_csv(DATA_DIR / "table_1.csv")
-        .pipe(lambda df: print("DataFrame before...") or df) # Note you need to use "or df" to return the dataframe instead of a None
-        .pipe(lambda df: display(df.head(3)) or df)
+        .pipe(lambda dfx: print("DataFrame before...") or dfx) # Note you need to use "or df" to return the dataframe instead of a None
+        .pipe(lambda dfx: display(dfx.head(3)) or dfx)
         .assign(OpenCloseRange=lambda dfx: dfx["Open"] - dfx["Close"])
-        .pipe(lambda df: display("\nDataFrame after...\n", df.head(3)) or df) # You can also pass multiple arguments to display
+        .pipe(lambda dfx: display("\nDataFrame after...\n", dfx.head(3)) or dfx) # You can also pass multiple arguments to display
     )
     
     assert "OpenCloseRange" in df.columns
