@@ -1,14 +1,24 @@
 # Pandas Chaining Ninja
 
 ## What is the *Pandas Chaining* method?
+```python
+df = (
+    pd.read_csv("data.csv") # Load the data
+#    .query("column1 > 0") # DEBUG: filter rows
+    .assign(columnSum = lambda x: x["column1"] + x["column2"]) # Create new column
+    .drop_duplicated(subset=["columnSum"]) # Drop rows having the same sum
+    .pipe(lambda x: display(x) or df) # DEBUG: display the dataframe
+    .melt(id_vars=["column1", "column2"], value_vars=["column3", "column4"]) # Melt the dataframe
+)
+```
 
 The concept behind this method is to write the full pipeline that you need to transform your data in one stream of code:
 in such a way you are not creating multiple versions of the dataframes or some slices of them.
 The result is that you data pipeline is:
-- easier to read
-- easier to maintain
-- easier to debug
-- more efficient
+- easier to read, as you can see all operations line-by-line and also comment them on the side
+- easier to maintain, no copies nor slices around
+- easier to debug, you can display the dataframe at any point of the pipeline and comment out some operations to see the result
+- more efficient, you don't waste memory in copies and slices
 
 But there are also some downsides:
 - more pandas and numpy expertise is requres
@@ -29,7 +39,12 @@ because you could do equivalent operations that are more intuitive when you are 
 Therefore the purpose of this repository is to provide a reference for the most common operations that are key to perform the data
 manipulation under the chaining method.
 
-Why didn't I use Jupyter notebooks? Multiple reasons: but mainly to maintain the commits clean, split REAME's metacode to running code and perform testing on the pandas version.
+Why didn't I use Jupyter notebooks? Multiple reasons: 
+(1) to maintain the commits clean, 
+(2) to split REAME's metacode to running code,
+(3) to perform testing on the pandas version, having the possibility to run a chunk at a time,
+(4) to more easily accept your PR contributions.
+Anyway, I will maybe add a Jupyter notebook in the future.
 
 ## Chunks of code
 
