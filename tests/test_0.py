@@ -1,8 +1,11 @@
 import pandas as pd
 from . import DATA_DIR
 
+from IPython.display import display
+
 def test_01():
     """Read a CSV file and create a new column with 3 different methods"""
+    print("\n>> Output from test_01:")
 
     # Method 1: traditional
     df = pd.read_csv(DATA_DIR / "table_1.csv")
@@ -25,9 +28,22 @@ def test_01():
         .assign(OpenCloseRange=lambda dfx: dfx["Open"] - dfx["Close"])
     )
     
-    print()
-    print(df.head(3))
+    
+    display(df.head(3))
     
     assert "OpenCloseRange" in df.columns
 
     
+def test_02():
+    """Display thedataframe within the chaining."""
+    print("\n>> Output from test_02:")
+    
+    df = (
+        pd.read_csv(DATA_DIR / "table_1.csv")
+        .pipe(lambda df: print("DataFrame before...") or df) # Note you need to use "or df" to return the dataframe instead of a None
+        .pipe(lambda df: display(df.head(3)) or df)
+        .assign(OpenCloseRange=lambda dfx: dfx["Open"] - dfx["Close"])
+        .pipe(lambda df: display("\nDataFrame after...\n", df.head(3)) or df) # You can also pass multiple arguments to display
+    )
+    
+    assert "OpenCloseRange" in df.columns
