@@ -24,6 +24,13 @@ But there are also some downsides:
 The idea behind this repository is to share chunks of code that is easy to browse, and it is running tests via GitHub Actions 
 to make sure the code is working with the lasest pandas version.
 
+Using the chaining method you will use nupy and pandas functions that you may not be familiar with (e.g., `where`, `select`, `query`, `pipe`, `filter`, ...),
+because you could do equivalent operations that are more intuitive when you are allowed to save-and-modify the dataframe multiple times.
+Therefore the purpose of this repository is to provide a reference for the most common operations that are key to perform the data
+manipulation under the chaining method.
+
+Why didn't I use Jupyter notebooks? Multiple reasons: but mainly to maintain the commits clean, split REAME's metacode to running code and perform testing on the pandas version.
+
 ## Chunks of code
 
 ### Read CSV
@@ -67,3 +74,75 @@ You can display the dataframe within the chaining with `pipe`:
 )
 ```
 See `test_02`.
+
+### Query rows by condition
+Instead of using `df[df.column1>0]` you can query rows by condition with `query`:
+```python
+(
+    df
+    .query("column1 > 0")
+    .query("`column 2` > 0") # use backticks for columns with spaces
+    .query("column3 > @myvalue") # use @ for local variables
+    .query("column4 > 0 | column5 > 0") # use | for OR
+    .query("column6 > 0 & column7 > 0") # use & for AND - note this is the same as using multiple lines of query!
+    .query(lambda dfx: dfx["column8"] > 0) # You can also use a lambda function
+)
+```
+
+### Une numpy functions to create a new column based on other columns
+Create a new column with the result of a [numpy `where`](https://numpy.org/doc/stable/reference/generated/numpy.where.html) function:
+```python
+(
+    df
+    .assign(val2ifPos_val3ifNeg = lambda x: np.where(x["column1"] > 0, x["column2"], x["column3"]))
+)
+```
+or using [`np.select`](https://numpy.org/doc/stable/reference/generated/numpy.select.html) for multiple conditions:
+```python
+(
+    df
+    .assign(SelectedColValue = lambda x: np.select(
+        condlist = [
+            x["colSel"] == "A", 
+            x["colSel"] == "B", 
+            x["colSel"] == "C"],
+        choicelist = [x["colA"], x["colB"], x["colC"]],
+        default = x["colX"] # If non of the conditions are met, use this value
+    ))
+)
+``` 
+
+### Sum columns that start with a string
+Since it is somewhat impractical to use MultiIndex columns in pandas (IMHO), if you want to specify a subset of columns
+it is usually more convenient to pre/post-pend a string and use [pandas `filter`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.filter.html) to select them.
+
+For example we want to sum the attributes `attr` of `df.columns = ["ID", "attr_1", "attr_2", "attr_3", "value", "notes"]`:
+```python
+(
+    df
+    .assign(
+        attr_sum_alt1 = lambda x: x.filter(like="attr_").sum(axis=1), # filter if "attr_" is in the column name
+        attr_sum_alt2 = lambda x: x.filter(regex="^attr_").sum(axis=1), # filter if "attr_" is at the start of the column name, using regex (see CheatSheet at the end of this README)
+    )
+)
+```
+
+## Regex Cheat Sheet
+- `^` start of string
+- `$` end of string
+- `.` any character
+- `*` zero or more repetitions
+- `+` one or more repetitions
+- `?` zero or one repetitions
+- `[]` any character inside the brackets
+- `[^]` any character not inside the brackets
+- `|` OR
+- `()` group
+- `\` escape character
+- `\d` digit
+- `\D` non-digit
+- `\s` whitespace
+- `\S` non-whitespace
+- `\w` alphanumeric
+- `\W` non-alphanumeric
+

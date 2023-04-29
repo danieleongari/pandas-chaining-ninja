@@ -35,7 +35,7 @@ def test_01():
 
     
 def test_02():
-    """Display thedataframe within the chaining."""
+    """Display the dataframe within the chaining."""
     print("\n>> Output from test_02:")
     
     df = (
