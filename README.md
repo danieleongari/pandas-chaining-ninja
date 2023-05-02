@@ -143,6 +143,15 @@ For example we want to sum the attributes `attr` of `df.columns = ["ID", "attr_1
 )
 ```
 
+### Drop specific columns based on their values
+```python
+(
+    df
+    .loc[:, lambda dfx: (dfx != 0).any(axis=0)] # Drop all columns that contain only zeros
+    .loc[:, lambda dfx: dfx.select_dtypes(include="number").sum() >= 0] # Drop all columns whose sum is negative, ignoring non-numeric columns
+)
+```
+
 ## Regex Cheat Sheet
 - `^` start of string
 - `$` end of string
