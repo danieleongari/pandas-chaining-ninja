@@ -102,6 +102,7 @@ Instead of using `df[df.column1>0]` you can query rows by condition with `query`
     .query("column4 > 0 | column5 > 0") # use | for OR
     .query("column6 > 0 & column7 > 0") # use & for AND - note this is the same as using multiple lines of query!
     .query(lambda dfx: dfx["column8"] > 0) # You can also use a lambda function
+    .query("column9.isna()") # Select rows with NaN value for column9 
 )
 ```
 
