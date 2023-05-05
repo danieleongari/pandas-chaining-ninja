@@ -5,10 +5,13 @@
 ```python
 df = (
     pd.read_csv("data.csv") # Load the data
-#    .query("column1 > 0") # DEBUG: filter rows
+    .pipe(lambda dfx: print(f"Number of rows BEFORE query: {len(dfx)}") or dfx)
+    .query("column1 > 0")
+#    .query("column2 > 0") # DEBUG: filter rows on stricter condition
+    .pipe(lambda dfx: print(f"Number of rows AFTER query: {len(dfx)}") or dfx)
     .assign(columnSum = lambda x: x["column1"] + x["column2"]) # Create new column
     .drop_duplicated(subset=["columnSum"]) # Drop rows having the same sum
-    .pipe(lambda x: display(x) or df) # DEBUG: display the dataframe
+    .pipe(lambda dfx: display(dfx) or dfx) # DEBUG: display the dataframe
     .melt(id_vars=["column1", "column2"], value_vars=["column3", "column4"]) # Melt the dataframe
 )
 ```
