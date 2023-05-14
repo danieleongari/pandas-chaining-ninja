@@ -1,5 +1,5 @@
 # Pandas Chaining Ninja
-![](header_image.png)
+![](header_image.jpg)
 
 ## What is the *Pandas Chaining* method?
 ```python
