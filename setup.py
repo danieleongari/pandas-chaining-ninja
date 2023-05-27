@@ -23,7 +23,7 @@ if __name__ == '__main__':
           extras_require={
               "testing": [
                   "pytest==7.3.1", 
-                  "pytest-cov==2.12.1"
+                  "pytest-cov==4.1.0"
             ],
               "pre-commit": [
                   "pre-commit==3.2.2",
