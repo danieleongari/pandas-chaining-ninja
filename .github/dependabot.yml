@@ -9,8 +9,10 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
-    ignore: # I don't want to mess up with pre-commit hooks
+    ignore: # I don't want to mess up with tests and hooks
       - dependency-name: "pre-commit"
       - dependency-name: "yapf"
       - dependency-name: "prospector"
+      - dependency-name: "pytest"
+      - dependency-name: "pytest-cov"
   
