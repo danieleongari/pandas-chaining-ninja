@@ -47,7 +47,8 @@ Why didn't I use Jupyter notebooks? Multiple reasons:
 (1) to maintain the commits clean, 
 (2) to split REAME's metacode to running code,
 (3) to perform testing on the pandas version, having the possibility to run a chunk at a time,
-(4) to more easily accept your PR contributions.
+(4) to more easily accept your PR contributions,
+(5) to run [dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/about-dependabot-version-updates) and check if the new releases of pandas are breaking the code snippets.
 Anyway, I will maybe add a Jupyter notebook in the future.
 
 ## Chunks of code
