@@ -18,7 +18,7 @@ if __name__ == '__main__':
           version="0.1.0",
           install_requires=[
               "pandas==2.0.2",
-              "ipython==8.13.2"
+              "ipython==8.14.0"
           ],
           extras_require={
               "testing": [
