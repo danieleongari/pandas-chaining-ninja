@@ -51,6 +51,10 @@ Why didn't I use Jupyter notebooks? Multiple reasons:
 (5) to run [dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/about-dependabot-version-updates) and check if the new releases of pandas are breaking the code snippets.
 Anyway, I will maybe add a Jupyter notebook in the future.
 
+## Tested on different Pandas versions
+The code in the `tests/` is run on all pandas version from 1.0 to the latest. The latest version is bumped by [dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/about-dependabot-version-updates),
+while for previous versions all the minor releases are tested to the latest bug fix, e.g., `1.0.5`, `1.1.5`, `1.2.5`, etc.
+
 ## Chunks of code
 
 ### Read CSV
