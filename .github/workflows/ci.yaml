@@ -136,21 +136,3 @@ jobs:
         run: pip show pandas
       - name: Run tests with pytest
         run: pytest -s # show output print
-
-  build-pandas-1_0:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install Python 3
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.8
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pandas~=1.0.0 ipython pytest pytest-cov
-          pip freeze
-      - name: Show pandas version
-        run: pip show pandas
-      - name: Run tests with pytest
-        run: pytest -s # show output print
