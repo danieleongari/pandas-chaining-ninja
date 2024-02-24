@@ -26,6 +26,25 @@ jobs:
         run: pip show pandas
       - name: Run tests with pytest
         run: pytest -s # show output print
+
+  build-pandas-2_1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Python 3
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.11
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install  -e .[testing]
+          pip install pandas~=2.1.0
+          pip freeze
+      - name: Show pandas version
+        run: pip show pandas
+      - name: Run tests with pytest
+        run: pytest -s # show output print
         
   build-pandas-2_0:
     runs-on: ubuntu-latest
