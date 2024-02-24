@@ -12,9 +12,9 @@ jobs:
   build-pandas-latest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Install Python 3
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
           python-version: 3.11
       - name: Install dependencies
@@ -30,9 +30,9 @@ jobs:
   build-pandas-2_1:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Install Python 3
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
           python-version: 3.11
       - name: Install dependencies
@@ -49,9 +49,9 @@ jobs:
   build-pandas-2_0:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Install Python 3
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
           python-version: 3.11
       - name: Install dependencies
@@ -68,9 +68,9 @@ jobs:
   build-pandas-1_5:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Install Python 3
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
           python-version: 3.11
       - name: Install dependencies
@@ -87,9 +87,9 @@ jobs:
   build-pandas-1_4:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Install Python 3
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
           python-version: 3.9
       - name: Install dependencies
@@ -105,9 +105,9 @@ jobs:
   build-pandas-1_3:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Install Python 3
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
           python-version: 3.9
       - name: Install dependencies
@@ -123,9 +123,9 @@ jobs:
   build-pandas-1_2:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Install Python 3
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
           python-version: 3.9
       - name: Install dependencies
@@ -141,9 +141,9 @@ jobs:
   build-pandas-1_1:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Install Python 3
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
           python-version: 3.8
       - name: Install dependencies
