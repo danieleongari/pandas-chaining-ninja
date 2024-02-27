@@ -17,7 +17,7 @@ if __name__ == '__main__':
           classifiers=["Programming Language :: Python"],
           version="0.1.0",
           install_requires=[
-              "pandas==2.1.4",
+              "pandas==2.2.1",
               "ipython"
           ],
           extras_require={
