@@ -82,9 +82,13 @@ You can add new columns to the dataframe with `assign`:
 (
     df
     .assign(new_column = lambda x: x["column1"] + x["column2"])
-    .assign(new_column2 = lambda x: x["column1"] + x["column2"])
+    .assign(
+        new_column2 = lambda x: x["column3"] * 2,
+        new_column3 = lambda x: x["new_column2"] / 2 # You can use the new column in the same assign
+    )
 )
 ```
+
 
 If you need to create a column with spaces in the name, you can use `assign` with a dictionary:
 ```python
@@ -176,11 +180,13 @@ df[["column1", "column2"]] = df["column"].str.split(" ", expand=True)
 See `test_05`.
 
 
-### Sum columns that start with a string
-Since it is somewhat impractical to use MultiIndex columns in pandas (IMHO), if you want to specify a subset of columns
+### Operate on certain subset of columns
+Practical example: sum columns that start with a certain string.
+
+Rational: since it is somewhat impractical to use MultiIndex columns in pandas (IMHO), if you want to specify a subset of columns
 it is usually more convenient to pre/post-pend a string and use [pandas `filter`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.filter.html) to select them.
 
-For example we want to sum the attributes `attr` of `df.columns = ["ID", "attr_1", "attr_2", "attr_3", "value", "notes"]`:
+Here, we want to sum the attributes `attr` of `df.columns = ["ID", "attr_1", "attr_2", "attr_3", "value", "notes"]`:
 ```python
 (
     df

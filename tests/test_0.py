@@ -29,6 +29,15 @@ def test_01():
         .assign(OpenCloseRange=lambda dfx: dfx["Open"] - dfx["Close"])
     )
     
+    # Extra: use multiple assign variables
+    df = (
+        pd.read_csv(DATA_DIR / "table_1.csv")
+        .assign(
+            OpenCloseRange=lambda dfx: dfx["Open"] - dfx["Close"],
+            # Use the column just created above, in the same assign
+            OpenCloseRangeAbs=lambda dfx: dfx["OpenCloseRange"].abs() 
+        )
+    )
     
     display(df.head(3))
     
@@ -117,5 +126,31 @@ def test_05():
     display(df.head(5))
     
     assert "FirstWord" in df.columns and "SecondWord" in df.columns
+    
+
+def test_06():
+    """Operate on certain subset of columns"""
+    print("\n>> Output from test_06:")
+    
+    df = (
+        pd.read_csv(DATA_DIR / "table_1.csv")
+        .assign(
+            Close1=lambda x: x["Close"] + 1,
+            Close2=lambda x: x["Close"] + 2,
+            Close3=lambda x: x["Close"] + 3,
+            OpenNotClose=lambda x: x["Open"],
+        )
+        # After creating the new columns, we want to sum Close, Close1, Close2, Close3
+        # but not OpenNotClose
+        .assign(
+            WrongSum0123 = lambda x: x.filter(like="Close").sum(axis=1), # will include OpenNotClose
+            CloseSum0123 = lambda x: x.filter(regex="^Close").sum(axis=1) # Correct
+        )
+    )
+    
+    display(df.head(5))
+    
+    firstrow = df.iloc[0]
+    assert firstrow["CloseSum0123"] == firstrow["Close"] + firstrow["Close1"] + firstrow["Close2"] + firstrow["Close3"]
     
     
