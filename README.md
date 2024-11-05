@@ -26,13 +26,13 @@ in such a way you are not creating multiple versions of the dataframes or some s
 The result is that you data pipeline is:
 - easier to read, as you can see all operations line-by-line and also comment them on the side
 - easier to maintain, no copies nor slices around
-- easier to make modular, as you can define functions that you can use in the pipeline
+- easier to make modular, as you elegantly define before the functions that you will use in the pipeline
 - easier to debug, you can display the dataframe at any point of the pipeline and comment out some operations to see the result
 - more *memory* efficient, you don't waste memory in copies and slices
 
 But there are also some downsides:
 - more pandas and numpy expertise is requres
-- you need to run all the operations every time, which may be time consuming when working on a particular operation but you need to run the whole pipeline
+- you need to run all the operations every time, which may be time consuming when working on a particular single operation (i.e., line) but you need to run the whole pipeline
 
 ## How to use this repository
 1. Search what you need in this readme file
