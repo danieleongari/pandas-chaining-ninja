@@ -74,7 +74,7 @@ df = (
     .dosomeotheroperation()
 )
 ```
-See `test_01`.
+See [`test_01`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
 
 ### Add new columns
 You can add new columns to the dataframe with `assign`:
@@ -97,7 +97,7 @@ If you need to create a column with spaces in the name, you can use `assign` wit
     .assign(**{"new column": lambda x: x["column1"] + x["column2"]})
 )
 ```
-See `test_01`.
+See [`test_01`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
 
 ### Display the dataframe within the chaining
 You can display the dataframe within the chaining with `pipe`:
@@ -109,7 +109,7 @@ You can display the dataframe within the chaining with `pipe`:
     .dosomeotheroperation()
 )
 ```
-See `test_02`.
+See [`test_02`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
 
 ### Query rows by conditions
 Instead of using `df[df.column1>0]` you can query rows by condition with `query`:
@@ -125,7 +125,7 @@ Instead of using `df[df.column1>0]` you can query rows by condition with `query`
     .loc[(lambda dfx: dfx["column8"] > 0)] # You can also use a lambda function with .loc as alternative to .query
 )
 ```
-See `test_03`.
+See [`test_03`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
 
 ### Use numpy functions to create a new column based on other columns
 Create a new column with the result of a [numpy `where`](https://numpy.org/doc/stable/reference/generated/numpy.where.html) function:
@@ -149,7 +149,7 @@ or using [`np.select`](https://numpy.org/doc/stable/reference/generated/numpy.se
     ))
 )
 ``` 
-See `test_04`.
+See [`test_04`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
 
 ### Split one column into two (or more) in a single operation
 You have a column with strings like `AAA BBB` and you want to split `AAA` and `BBB` into two separated columns.
@@ -177,7 +177,7 @@ df[["column1", "column2"]] = df["column"].str.split(" ", expand=True)
     )
 )
 ```
-See `test_05`.
+See [`test_05`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
 
 
 ### Operate on certain subset of columns
@@ -196,6 +196,8 @@ Here, we want to sum the attributes `attr` of `df.columns = ["ID", "attr_1", "at
     )
 )
 ```
+See [`test_06`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
+
 
 ### Drop specific columns based on their values
 ```python
