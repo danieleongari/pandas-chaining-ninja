@@ -3,7 +3,7 @@
 
 ## What is the *Pandas Chaining* method?
 ```python
-def mycustomtransform(xxx):
+def mycustomfunc(xxx):
     # turn xxx value into xxy
     return xxy
 
@@ -16,7 +16,7 @@ df = (
     .assign(columnSum = lambda x: x["column1"] + x["column2"]) # Create new column
     .drop_duplicated(subset=["columnSum"]) # Drop rows having the same sum
     .pipe(lambda dfx: display(dfx) or dfx) # DEBUG: display the dataframe
-    .assign(column3 = lambda x: x["column3"].apply(mycustomtransform)) # Apply a custom function
+    .assign(column3 = lambda x: x["column3"].apply(mycustomfunc)) # Apply a custom function
     .melt(id_vars=["column1", "column2"], value_vars=["column3", "column4"]) # Melt the dataframe
 )
 ```
