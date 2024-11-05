@@ -107,7 +107,7 @@ You can display the dataframe within the chaining with `pipe`:
 ```
 See `test_02`.
 
-### Query rows by condition
+### Query rows by conditions
 Instead of using `df[df.column1>0]` you can query rows by condition with `query`:
 ```python
 (
@@ -116,13 +116,14 @@ Instead of using `df[df.column1>0]` you can query rows by condition with `query`
     .query("`column 2` > 0") # use backticks for columns with spaces
     .query("column3 > @myvalue") # use @ for local variables
     .query("column4 > 0 | column5 > 0") # use | for OR
-    .query("column6 > 0 & column7 > 0") # use & for AND - note this is the same as using multiple lines of query!
-    .query(lambda dfx: dfx["column8"] > 0) # You can also use a lambda function
+    .query("column6 > 0 & column7 > 0") # use & for AND ...but note thta this is the same as using multiple lines of query!
     .query("column9.isna()") # Select rows with NaN value for column9 
+    .loc[(lambda dfx: dfx["column8"] > 0)] # You can also use a lambda function with .loc as alternative to .query
 )
 ```
+See `test_03`.
 
-### Une numpy functions to create a new column based on other columns
+### Use numpy functions to create a new column based on other columns
 Create a new column with the result of a [numpy `where`](https://numpy.org/doc/stable/reference/generated/numpy.where.html) function:
 ```python
 (
@@ -144,6 +145,36 @@ or using [`np.select`](https://numpy.org/doc/stable/reference/generated/numpy.se
     ))
 )
 ``` 
+See `test_04`.
+
+### Split one column into two (or more) in a single operation
+You have a column with strings like `AAA BBB` and you want to split `AAA` and `BBB` into two separated columns.
+You want to be eficient and not call the `split` function twice to do the same operation.
+
+```python
+# Not Chaining: N00B!
+df[["column1", "column2"]] = df["column"].str.split(" ", expand=True)
+
+# Calling the split function twice: NOT EFFICIENT!
+(
+    df
+    .assign(
+        column1 = lambda x: x["column"].str.split(" ", expand=True)[0],
+        column2 = lambda x: x["column"].str.split(" ", expand=True)[1]
+    )
+)
+
+# GOD solution
+(
+    df
+    .pipe(lambda x: x.assign(
+        **x["column"].str.split(" ", expand=True)
+        .rename(columns={0: "column1", 1: "column2"}))
+    )
+)
+```
+See `test_05`.
+
 
 ### Sum columns that start with a string
 Since it is somewhat impractical to use MultiIndex columns in pandas (IMHO), if you want to specify a subset of columns
@@ -168,34 +199,6 @@ For example we want to sum the attributes `attr` of `df.columns = ["ID", "attr_1
     .loc[:, lambda dfx: dfx.select_dtypes(include="number").sum() >= 0] # Drop all columns whose sum is negative, ignoring non-numeric columns
 )
 ```
-
-### Split one column into two (or more) in a single operation
-You have a column with strings like `AAA BBB` and you want to split `AAA` and `BBB` into two separated columns.
-You want to be eficient and not call the `split` function twice to do the same operation.
-
-```python
-# Not Chaining: BAD
-df[["column1", "column2"]] = df["column"].str.split(" ", expand=True)
-
-# Calling the split function twice: BAD
-(
-    df
-    .assign(
-        column1 = lambda x: x["column"].str.split(" ", expand=True)[0],
-        column2 = lambda x: x["column"].str.split(" ", expand=True)[1]
-    )
-)
-
-# Good solution
-(
-    df
-    .assign(
-        **lambda x: x["column"].str.split(" ", expand=True)
-            .rename(columns={0: "column1", 1: "column2"})
-    )
-)
-```
-
 
 ## Regex Cheat Sheet
 - `^` start of string
