@@ -27,7 +27,5 @@ if __name__ == '__main__':
             ],
               "pre-commit": [
                   "pre-commit==3.2.2",
-                  "yapf==0.33.0",
-                  "prospector==1.9.0"
             ]
           })

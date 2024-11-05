@@ -4,28 +4,6 @@ repos:
 - repo: local
   hooks:
 
-  # # yet another python formatter
-  # - id: yapf 
-  #   name: yapf
-  #   entry: yapf
-  #   language: system
-  #   types: [python]
-  #   args: ["-i"]
-
-  # # collection of linters
-  # - id: prospector 
-  #   language: system
-  #   types: [file, python]
-  #   name: prospector
-  #   description: "This hook runs Prospector: https://github.com/landscapeio/prospector"
-  #   entry: prospector
-
-# - repo: https://github.com/alan-turing-institute/CleverCSV-pre-commit
-#   rev: v0.7.1 
-#   hooks:
-#     # CSV files checker
-#     - id: clevercsv-standardize
-
   - id: pytest-check
     name: pytest-check
     entry: pytest
