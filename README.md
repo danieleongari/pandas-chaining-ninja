@@ -3,6 +3,10 @@
 
 ## What is the *Pandas Chaining* method?
 ```python
+def mycustomtransform(xxx):
+    # turn xxx value into xxy
+    return xxy
+
 df = (
     pd.read_csv("data.csv") # Load the data
     .pipe(lambda dfx: print(f"Number of rows BEFORE query: {len(dfx)}") or dfx)
@@ -12,6 +16,7 @@ df = (
     .assign(columnSum = lambda x: x["column1"] + x["column2"]) # Create new column
     .drop_duplicated(subset=["columnSum"]) # Drop rows having the same sum
     .pipe(lambda dfx: display(dfx) or dfx) # DEBUG: display the dataframe
+    .assign(column3 = lambda x: x["column3"].apply(mycustomtransform)) # Apply a custom function
     .melt(id_vars=["column1", "column2"], value_vars=["column3", "column4"]) # Melt the dataframe
 )
 ```
@@ -21,8 +26,9 @@ in such a way you are not creating multiple versions of the dataframes or some s
 The result is that you data pipeline is:
 - easier to read, as you can see all operations line-by-line and also comment them on the side
 - easier to maintain, no copies nor slices around
+- easier to make modular, as you can define functions that you can use in the pipeline
 - easier to debug, you can display the dataframe at any point of the pipeline and comment out some operations to see the result
-- more efficient, you don't waste memory in copies and slices
+- more *memory* efficient, you don't waste memory in copies and slices
 
 But there are also some downsides:
 - more pandas and numpy expertise is requres
@@ -162,6 +168,34 @@ For example we want to sum the attributes `attr` of `df.columns = ["ID", "attr_1
     .loc[:, lambda dfx: dfx.select_dtypes(include="number").sum() >= 0] # Drop all columns whose sum is negative, ignoring non-numeric columns
 )
 ```
+
+### Split one column into two (or more) in a single operation
+You have a column with strings like `AAA BBB` and you want to split `AAA` and `BBB` into two separated columns.
+You want to be eficient and not call the `split` function twice to do the same operation.
+
+```python
+# Not Chaining: BAD
+df[["column1", "column2"]] = df["column"].str.split(" ", expand=True)
+
+# Calling the split function twice: BAD
+(
+    df
+    .assign(
+        column1 = lambda x: x["column"].str.split(" ", expand=True)[0],
+        column2 = lambda x: x["column"].str.split(" ", expand=True)[1]
+    )
+)
+
+# Good solution
+(
+    df
+    .assign(
+        **lambda x: x["column"].str.split(" ", expand=True)
+            .rename(columns={0: "column1", 1: "column2"})
+    )
+)
+```
+
 
 ## Regex Cheat Sheet
 - `^` start of string
