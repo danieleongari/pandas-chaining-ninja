@@ -1,3 +1,5 @@
+"""To be run as `pytest -s` to display the print statements"""
+
 import pandas as pd
 import numpy as np
 from . import DATA_DIR
@@ -81,7 +83,7 @@ def test_03():
     assert len(df) < 20
     
 def test_04():
-    """Use numpy functions to create a new column based on other columns"""
+    """Use numpy functions to create a new column based on other columns."""
     print("\n>> Output from test_04:")
     
     df = (
@@ -110,7 +112,7 @@ def test_04():
     
 
 def test_05():
-    """Split one column into two (or more) in a single operation"""
+    """Split one column into two (or more) in a single operation."""
     print("\n>> Output from test_05:")
     
     df = (
@@ -129,7 +131,7 @@ def test_05():
     
 
 def test_06():
-    """Operate on certain subset of columns"""
+    """Operate on certain subset of columns."""
     print("\n>> Output from test_06:")
     
     df = (
@@ -152,5 +154,21 @@ def test_06():
     
     firstrow = df.iloc[0]
     assert firstrow["CloseSum0123"] == firstrow["Close"] + firstrow["Close1"] + firstrow["Close2"] + firstrow["Close3"]
+
+
+def test_07():
+    """Keep specific columns based on their values."""
+    print("\n>> Output from test_07:")
     
+    df = (
+        pd.read_csv(DATA_DIR / "table_1.csv")
+        # keep only columns that are non-numeric or have a mean >= 200
+        .loc[:, lambda dfx: (
+            dfx.select_dtypes(exclude="number").columns.tolist() + 
+            dfx.select_dtypes(include="number").columns[dfx.select_dtypes(include="number").mean() >= 200].tolist()
+        )]
+    )
     
+    display(df.head(3))
+    
+    assert all([ col not in df.columns for col in ["Open", "Low", "Close"]])

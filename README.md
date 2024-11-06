@@ -199,14 +199,19 @@ Here, we want to sum the attributes `attr` of `df.columns = ["ID", "attr_1", "at
 See [`test_06`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
 
 
-### Drop specific columns based on their values
+### Keep specific columns based on their values
 ```python
 (
     df
-    .loc[:, lambda dfx: (dfx != 0).any(axis=0)] # Drop all columns that contain only zeros
-    .loc[:, lambda dfx: dfx.select_dtypes(include="number").sum() >= 0] # Drop all columns whose sum is negative, ignoring non-numeric columns
+    .loc[:, lambda dfx: (dfx != 0).any(axis=0)] # Drop all columns that contain only zeros 
+    .loc[:, lambda dfx: (dfx > 200).any(axis=0)] # Drop all columns that contain only values below 200 (working only if all columns are numeric)
+    .loc[:, lambda dfx: (
+        dfx.select_dtypes(exclude="number").columns.tolist() + 
+        dfx.select_dtypes(include="number").columns[dfx.select_dtypes(include="number").mean() >= 200].tolist()
+    )] # Keep all non-numeric columns and all numeric columns with mean >= 200
 )
 ```
+See [`test_07`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
 
 ## Regex Cheat Sheet
 - `^` start of string
