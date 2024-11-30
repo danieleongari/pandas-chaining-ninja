@@ -31,7 +31,7 @@ The result is that you data pipeline is:
 - more *memory* efficient, you don't waste memory in copies and slices
 
 But there are also some downsides:
-- more pandas and numpy expertise is requres
+- more pandas and numpy expertise is required
 - you need to run all the operations every time, which may be time consuming when working on a particular single operation (i.e., line) but you need to run the whole pipeline
 
 ## How to use this repository
@@ -44,14 +44,14 @@ But there are also some downsides:
 The idea behind this repository is to share chunks of code that is easy to browse, and it is running tests via GitHub Actions 
 to make sure the code is working with the lasest pandas version.
 
-Using the chaining method you will use nupy and pandas functions that you may not be familiar with (e.g., `where`, `select`, `query`, `pipe`, `filter`, ...),
+With the chaining method you will use nupy and pandas functions that you may not be familiar with (e.g., `where`, `select`, `query`, `pipe`, `filter`, ...),
 because you could do equivalent operations that are more intuitive when you are allowed to save-and-modify the dataframe multiple times.
 Therefore the purpose of this repository is to provide a reference for the most common operations that are key to perform the data
 manipulation under the chaining method.
 
 Why didn't I use Jupyter notebooks? Multiple reasons: 
 (1) to maintain the commits clean, 
-(2) to split REAME's metacode to running code,
+(2) to split README's metacode to running code,
 (3) to perform testing on the pandas version, having the possibility to run a chunk at a time,
 (4) to more easily accept your PR contributions,
 (5) to run [dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/about-dependabot-version-updates) and check if the new releases of pandas are breaking the code snippets.
@@ -177,7 +177,31 @@ df[["column1", "column2"]] = df["column"].str.split(" ", expand=True)
     )
 )
 ```
+Note what is going on here: you first create an expanded dataframe with the two splitted columns named `0` and `1`.
+Then you rename the columns to the desired names, and use `assign` to add them to the main dataframe.
+
 See [`test_05`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
+
+Similarly, if you want to apply some custom function (instead of `split`) to a column and create multiple columns, 
+you can use a similar  approach:
+
+```python
+def mycustomfuncmultioutput(x):
+    """Simple function where you can pass an array and return two arrays."""
+    return x/1e3, x/1e6
+
+(
+    df
+    .pipe(lambda x: x.assign(
+        **pd.DataFrame(
+            x["column"].apply(mycustomfuncmultioutput).tolist(), 
+            columns=["column1", "column2"]).to_dict()
+        )
+    )
+)
+```
+
+See [`test_06`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
 
 
 ### Operate on certain subset of columns
@@ -196,7 +220,7 @@ Here, we want to sum the attributes `attr` of `df.columns = ["ID", "attr_1", "at
     )
 )
 ```
-See [`test_06`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
+See [`test_07`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
 
 
 ### Keep specific columns based on their values
@@ -211,7 +235,7 @@ See [`test_06`](https://github.com/danieleongari/pandas-chaining-ninja/blob/mast
     )] # Keep all non-numeric columns and all numeric columns with mean >= 200
 )
 ```
-See [`test_07`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
+See [`test_08`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
 
 ## Regex Cheat Sheet
 - `^` start of string
@@ -231,4 +255,6 @@ See [`test_07`](https://github.com/danieleongari/pandas-chaining-ninja/blob/mast
 - `\S` non-whitespace
 - `\w` alphanumeric
 - `\W` non-alphanumeric
+- 
+Remember: life is to short to learn Regex, ask some LLM!
 

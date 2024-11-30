@@ -129,10 +129,36 @@ def test_05():
     
     assert "FirstWord" in df.columns and "SecondWord" in df.columns
     
-
 def test_06():
-    """Operate on certain subset of columns."""
+    """Use a custom multioutput function to create two new columns."""
     print("\n>> Output from test_06:")
+    
+    def mycustomfuncmultioutput(x):
+        """Simple function where you can pass an array and return two arrays."""
+        return x/1e3, x/1e6
+    
+    # Example with numpy
+    example_array = np.array([2,4,6])
+    assert (mycustomfuncmultioutput(example_array)[1] == example_array/1e6).all()
+    
+    df = (
+        pd.read_csv(DATA_DIR / "table_1.csv")
+        .pipe(lambda x: x.assign(
+            **pd.DataFrame(
+                x["Volume"].apply(mycustomfuncmultioutput).tolist(), 
+                columns=["VolumeK", "VolumeM"]).to_dict()
+            )
+        )
+    )
+    
+    display(df.head(5))
+    
+    assert "VolumeK" in df.columns and "VolumeM" in df.columns
+    
+
+def test_07():
+    """Operate on certain subset of columns."""
+    print("\n>> Output from test_07:")
     
     df = (
         pd.read_csv(DATA_DIR / "table_1.csv")
@@ -156,9 +182,9 @@ def test_06():
     assert firstrow["CloseSum0123"] == firstrow["Close"] + firstrow["Close1"] + firstrow["Close2"] + firstrow["Close3"]
 
 
-def test_07():
+def test_08():
     """Keep specific columns based on their values."""
-    print("\n>> Output from test_07:")
+    print("\n>> Output from test_08:")
     
     df = (
         pd.read_csv(DATA_DIR / "table_1.csv")
