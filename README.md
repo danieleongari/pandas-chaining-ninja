@@ -25,7 +25,7 @@ The concept behind this method is to write the full pipeline that you need to tr
 in such a way you are not creating multiple versions of the dataframes or some slices of them.
 The result is that you data pipeline is:
 - easier to read, as you can see all operations line-by-line and also comment them on the side
-- easier to maintain, no copies nor slices around
+- easier to maintain, no copies nor slices around (maybe even in different cells of a Jupyter notebook... you know what I mean!) 
 - easier to make modular, as you elegantly define before the functions that you will use in the pipeline
 - easier to debug, you can display the dataframe at any point of the pipeline and comment out some operations to see the result
 - more *memory* efficient, you don't waste memory in copies and slices
