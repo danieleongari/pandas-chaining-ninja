@@ -35,7 +35,7 @@ But there are also some downsides:
 - you need to run all the operations every time, which may be time consuming when working on a particular single operation (i.e., line) but you need to run the whole pipeline
 
 ## How to use this repository
-1. Search what you need in this readme file
+1. Search what you need in this README file, or read it all to have a flavor of what you can do
 2. Look for working examples in the `tests/` folders: you can get the output on your computer with `pytest -s`, or checking *Actions > Last Commit > Build > Run tests with pytest*
 3. Use GitHub search in repository to find the code you need: I'll try to use many keywords to make it easier to find
 3. Explore further [REFERENCES](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/REFERENCES.md)
@@ -205,7 +205,7 @@ See [`test_06`](https://github.com/danieleongari/pandas-chaining-ninja/blob/mast
 
 
 ### Operate on certain subset of columns
-Practical example: sum columns that start with a certain string.
+Practical example: sum columns whose column name starts with a certain string.
 
 Rational: since it is somewhat impractical to use MultiIndex columns in pandas (IMHO), if you want to specify a subset of columns
 it is usually more convenient to pre/post-pend a string and use [pandas `filter`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.filter.html) to select them.
@@ -224,6 +224,9 @@ See [`test_07`](https://github.com/danieleongari/pandas-chaining-ninja/blob/mast
 
 
 ### Keep specific columns based on their values
+
+When you have many columns, you may want to keep only a few ones based on some logic applied to the content of their cells.
+
 ```python
 (
     df
@@ -255,6 +258,6 @@ See [`test_08`](https://github.com/danieleongari/pandas-chaining-ninja/blob/mast
 - `\S` non-whitespace
 - `\w` alphanumeric
 - `\W` non-alphanumeric
-- 
+
 Remember: life is to short to learn Regex, ask some LLM!
 
