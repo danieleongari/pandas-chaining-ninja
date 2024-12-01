@@ -21,52 +21,58 @@ df = (
 )
 ```
 
-The concept behind this method is to write the full pipeline that you need to transform your data in one stream of code:
-in such a way you are not creating multiple versions of the dataframes or some slices of them.
-The result is that you data pipeline is:
-- easier to read, as you can see all operations line-by-line and also comment them on the side
-- easier to maintain, no copies nor slices around (maybe even in different cells of a Jupyter notebook... you know what I mean!) 
-- easier to make modular, as you elegantly define before the functions that you will use in the pipeline
-- easier to debug, you can display the dataframe at any point of the pipeline and comment out some operations to see the result
-- more *memory* efficient, you don't waste memory in copies and slices
+The concept behind this method is to write the full pipeline that you need to transform your data, in one stream of code.
 
-But there are also some downsides:
-- more pandas and numpy expertise is required
-- you need to run all the operations every time, which may be time consuming when working on a particular single operation (i.e., line) but you need to run the whole pipeline
+You don't need any particular extra library, it is just a philosophy of how to write your pandas code. 
+
+As a result, you data pipeline will be:
+- **easier to read** - you can see all operations line-by-line and also comment them on the side
+- **easier to maintain** - no copies nor slices around (maybe even in different cells of a Jupyter notebook... you know what I mean!) 
+- **easier to make modular** - you will elegantly define before the functions that you will use in the pipeline
+- **easier to debug** - you can display the dataframe at any point of the pipeline (with `.pipe()`) or comment out (with `#`) all operations you are not focusing on
+- **more *memory* efficient** - you don't waste memory in copies and slices
+
+But let's be honest, there are also a few downsides:
+- more pandas and numpy expertise is required (but LLMs like GPT-4o reached a level that can help you with that)
+- may be time consuming when you are debugging one singular operation that depends on the previous ones, as there are no checkpoints saved (but you can comment out later operations)
 
 ## How to use this repository
+
 1. Search what you need in this README file, or read it all to have a flavor of what you can do
 2. Look for working examples in the `tests/` folders: you can get the output on your computer with `pytest -s`, or checking *Actions > Last Commit > Build > Run tests with pytest*
 3. Use GitHub search in repository to find the code you need: I'll try to use many keywords to make it easier to find
 3. Explore further [REFERENCES](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/REFERENCES.md)
 4. Open an issue or a pull request if you want to add any technique it was useful for you, to share
 
-The idea behind this repository is to share chunks of code that is easy to browse, and it is running tests via GitHub Actions 
-to make sure the code is working with the lasest pandas version.
+The idea behind this repository is to share chunks of code that are easy to browse, and running tests via GitHub Actions 
+to make sure the code is working with the lasest pandas version as well as some older versions.
 
-With the chaining method you will use nupy and pandas functions that you may not be familiar with (e.g., `where`, `select`, `query`, `pipe`, `filter`, ...),
+With the chaining method you will use `numpy` and `pandas` functions that you may not be familiar with (e.g., `where`, `select`, `query`, `pipe`, `filter`, ...),
 because you could do equivalent operations that are more intuitive when you are allowed to save-and-modify the dataframe multiple times.
 Therefore the purpose of this repository is to provide a reference for the most common operations that are key to perform the data
 manipulation under the chaining method.
 
-Why didn't I use Jupyter notebooks? Multiple reasons: 
+You may wonder: *"Why didn't I use a Jupyter notebooks?"* 
+Here a few reasons:
 (1) to maintain the commits clean, 
 (2) to split README's metacode to running code,
 (3) to perform testing on the pandas version, having the possibility to run a chunk at a time,
 (4) to more easily accept your PR contributions,
-(5) to run [dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/about-dependabot-version-updates) and check if the new releases of pandas are breaking the code snippets.
-Anyway, I will maybe add a Jupyter notebook in the future.
+(5) to run [dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/about-dependabot-version-updates) and check if the new releases of pandas are breaking any code snippets.
 
 ## Tested on different Pandas versions
 The code in the `tests/` is run on all pandas version from 1.1 to the latest. The latest version is bumped by [dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/about-dependabot-version-updates),
 while for previous versions all the minor releases are tested to the latest bug fix, e.g., `1.1.5`, `1.2.5`, etc.
 
-Note: earlier versions of pandas are not tested because they are not supported anymore for the code in test.
+Earlier versions of `pandas<1.1` (July 28, 2020) are not tested because they don't support anymore what I believe are basic functionalities for the chaining method,
+and I don't want to downgrade some useful functionalities to maintain compatibility with a 4+ years old version of the code.
 
 ## Chunks of code
 
 ### Read CSV
+
 You can start reading the CSV file already inside the chaining:
+
 ```python
 df = (
     pd.read_csv("data.csv")
@@ -74,10 +80,14 @@ df = (
     .dosomeotheroperation()
 )
 ```
+
 See [`test_01`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
 
+
 ### Add new columns
+
 You can add new columns to the dataframe with `assign`:
+
 ```python
 (
     df
@@ -89,18 +99,22 @@ You can add new columns to the dataframe with `assign`:
 )
 ```
 
-
 If you need to create a column with spaces in the name, you can use `assign` with a dictionary:
+
 ```python
 (
     df
     .assign(**{"new column": lambda x: x["column1"] + x["column2"]})
 )
 ```
+
 See [`test_01`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
 
+
 ### Display the dataframe within the chaining
+
 You can display the dataframe within the chaining with `pipe`:
+
 ```python
 (
     df
@@ -109,10 +123,14 @@ You can display the dataframe within the chaining with `pipe`:
     .dosomeotheroperation()
 )
 ```
+
 See [`test_02`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
 
+
 ### Query rows by conditions
+
 Instead of using `df[df.column1>0]` you can query rows by condition with `query`:
+
 ```python
 (
     df
@@ -125,17 +143,23 @@ Instead of using `df[df.column1>0]` you can query rows by condition with `query`
     .loc[(lambda dfx: dfx["column8"] > 0)] # You can also use a lambda function with .loc as alternative to .query
 )
 ```
+
 See [`test_03`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
 
+
 ### Use numpy functions to create a new column based on other columns
+
 Create a new column with the result of a [numpy `where`](https://numpy.org/doc/stable/reference/generated/numpy.where.html) function:
+
 ```python
 (
     df
     .assign(val2ifPos_val3ifNeg = lambda x: np.where(x["column1"] > 0, x["column2"], x["column3"]))
 )
 ```
+
 or using [`np.select`](https://numpy.org/doc/stable/reference/generated/numpy.select.html) for multiple conditions:
+
 ```python
 (
     df
@@ -148,10 +172,13 @@ or using [`np.select`](https://numpy.org/doc/stable/reference/generated/numpy.se
         default = x["colX"] # If non of the conditions are met, use this value
     ))
 )
-``` 
+```
+
 See [`test_04`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
 
+
 ### Split one column into two (or more) in a single operation
+
 You have a column with strings like `AAA BBB` and you want to split `AAA` and `BBB` into two separated columns.
 You want to be eficient and not call the `split` function twice to do the same operation.
 
@@ -177,6 +204,7 @@ df[["column1", "column2"]] = df["column"].str.split(" ", expand=True)
     )
 )
 ```
+
 Note what is going on here: you first create an expanded dataframe with the two splitted columns named `0` and `1`.
 Then you rename the columns to the desired names, and use `assign` to add them to the main dataframe.
 
@@ -205,12 +233,14 @@ See [`test_06`](https://github.com/danieleongari/pandas-chaining-ninja/blob/mast
 
 
 ### Operate on certain subset of columns
+
 Practical example: sum columns whose column name starts with a certain string.
 
 Rational: since it is somewhat impractical to use MultiIndex columns in pandas (IMHO), if you want to specify a subset of columns
 it is usually more convenient to pre/post-pend a string and use [pandas `filter`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.filter.html) to select them.
 
 Here, we want to sum the attributes `attr` of `df.columns = ["ID", "attr_1", "attr_2", "attr_3", "value", "notes"]`:
+
 ```python
 (
     df
@@ -220,6 +250,7 @@ Here, we want to sum the attributes `attr` of `df.columns = ["ID", "attr_1", "at
     )
 )
 ```
+
 See [`test_07`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
 
 
@@ -238,7 +269,9 @@ When you have many columns, you may want to keep only a few ones based on some l
     )] # Keep all non-numeric columns and all numeric columns with mean >= 200
 )
 ```
+
 See [`test_08`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
+
 
 ## Regex Cheat Sheet
 - `^` start of string
@@ -259,5 +292,5 @@ See [`test_08`](https://github.com/danieleongari/pandas-chaining-ninja/blob/mast
 - `\w` alphanumeric
 - `\W` non-alphanumeric
 
-Remember: life is to short to learn Regex, ask some LLM!
+Remember: life is to short to learn Regex, ask help to some Large Language Model!
 
