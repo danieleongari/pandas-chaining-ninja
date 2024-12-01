@@ -26,15 +26,18 @@ The concept behind this method is to write the full pipeline that you need to tr
 You don't need any particular extra library, it is just a philosophy of how to write your pandas code. 
 
 As a result, you data pipeline will be:
-- **easier to read** - you can see all operations line-by-line and also comment them on the side
+- **easier to read** - you can see all operations line-by-line, in a compact format, and you can comment them on the side
 - **easier to maintain** - no copies nor slices around (maybe even in different cells of a Jupyter notebook... you know what I mean!) 
 - **easier to make modular** - you will elegantly define before the functions that you will use in the pipeline
 - **easier to debug** - you can display the dataframe at any point of the pipeline (with `.pipe()`) or comment out (with `#`) all operations you are not focusing on
 - **more *memory* efficient** - you don't waste memory in copies and slices
 
+In the era of Large Language Models (LLMs) copilots, I believe that these advantages are more important than ever, 
+to better synergize with the AI that is helping us to write code.
+
 But let's be honest, there are also a few downsides:
 - more pandas and numpy expertise is required (but LLMs like GPT-4o reached a level that can help you with that)
-- may be time consuming when you are debugging one singular operation that depends on the previous ones, as there are no checkpoints saved (but you can comment out later operations)
+- it may be time consuming when you are debugging one singular operation that depends on the previous ones, as there are no checkpoints saved (but you can comment out later operations)
 
 ## How to use this repository
 
