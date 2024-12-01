@@ -121,13 +121,22 @@ def test_05():
         # for this test are keept only rows where MixedTypes contains a " "
         .pipe(lambda x: x.assign(
             **x["MixedTypes"].str.split(" ", expand=True)
-            .rename(columns={0: "FirstWord", 1: "SecondWord"}))
+            .rename(columns={0: "FirstWord_alt1", 1: "SecondWord_alt1"}))
+        )
+        .pipe(lambda x: x.assign(
+            **pd.DataFrame(
+                x["MixedTypes"].str.split(" ").tolist(), 
+                columns=["FirstWord_alt2", "SecondWord_alt2"],
+                index=x.index
+                )
+            )
         )
     )
     
     display(df.head(5))
     
-    assert "FirstWord" in df.columns and "SecondWord" in df.columns
+    assert "FirstWord_alt1" in df.columns and "SecondWord_alt2" in df.columns
+    assert all(df["FirstWord_alt1"] == df["FirstWord_alt2"])
     
 def test_06():
     """Use a custom multioutput function to create two new columns."""
@@ -143,10 +152,13 @@ def test_06():
     
     df = (
         pd.read_csv(DATA_DIR / "table_1.csv")
+        .query("Volume > 50000000")
         .pipe(lambda x: x.assign(
             **pd.DataFrame(
                 x["Volume"].apply(mycustomfuncmultioutput).tolist(), 
-                columns=["VolumeK", "VolumeM"]).to_dict()
+                columns=["VolumeK", "VolumeM"],
+                index=x.index #without this the index will be inconsitent: VERY TRICKY!
+                )
             )
         )
     )

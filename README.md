@@ -186,7 +186,7 @@ You want to be eficient and not call the `split` function twice to do the same o
 # Not Chaining: N00B!
 df[["column1", "column2"]] = df["column"].str.split(" ", expand=True)
 
-# Calling the split function twice: NOT EFFICIENT!
+# Calling the split function twice: easier to read, but less efficient
 (
     df
     .assign(
@@ -195,7 +195,7 @@ df[["column1", "column2"]] = df["column"].str.split(" ", expand=True)
     )
 )
 
-# GOD solution
+# Most efficient solution, but maybe less readable for a non-expert
 (
     df
     .pipe(lambda x: x.assign(
@@ -203,6 +203,7 @@ df[["column1", "column2"]] = df["column"].str.split(" ", expand=True)
         .rename(columns={0: "column1", 1: "column2"}))
     )
 )
+
 ```
 
 Note what is going on here: you first create an expanded dataframe with the two splitted columns named `0` and `1`.
@@ -210,8 +211,24 @@ Then you rename the columns to the desired names, and use `assign` to add them t
 
 See [`test_05`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
 
-Similarly, if you want to apply some custom function (instead of `split`) to a column and create multiple columns, 
-you can use a similar  approach:
+Another equivalent alternative to the latest variant:
+
+```python
+(
+    df
+    .pipe(lambda x: x.assign(
+        **pd.DataFrame(
+            x["column"].str.split(" ").tolist(), 
+            columns=["column1", "column2"]),
+            index=x.index
+        )
+    )
+)
+```
+In this case you generate a DataFrame with the splitted columns, you assign the name of the columns you prefer,
+and then you assign it to the main DataFrame with the same index.
+
+Such alternative, is more generalizable, and you can use it with any custom function that returns multiple outputs:
 
 ```python
 def mycustomfuncmultioutput(x):
@@ -223,13 +240,21 @@ def mycustomfuncmultioutput(x):
     .pipe(lambda x: x.assign(
         **pd.DataFrame(
             x["column"].apply(mycustomfuncmultioutput).tolist(), 
-            columns=["column1", "column2"]).to_dict()
+            columns=["column1", "column2"]),
+            index=x.index
         )
     )
 )
 ```
 
 See [`test_06`](https://github.com/danieleongari/pandas-chaining-ninja/blob/master/tests/test_0.py).
+
+> **Note**: in this example we saw a very interesting tradeoff between readability and efficiency, worth to be discussed.
+> In any case, it is possible to make some clean chaining-rule readable code, but you will need to call the multi-output
+> function as many times as the number of outputs you have. 
+> If you want to be efficient, you need to write a more complex code that looks more like an IQ test than everyday code.
+> Unless the DataFrame is very large, or the function is very slow, I would personally go with the first solution.
+> The scope is to make the code readable and maintainable, not to make it a puzzle for the next developer!
 
 
 ### Operate on certain subset of columns
