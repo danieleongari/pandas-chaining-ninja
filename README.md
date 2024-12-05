@@ -1,7 +1,7 @@
 # Pandas Chaining Ninja
 ![](header_image.jpg)
 
-## What is the *Pandas Chaining* method?
+## What is the *Pandas Method Chaining* approach?
 ```python
 def mycustomfunc(xxx):
     # turn xxx value into xxy
@@ -21,7 +21,7 @@ df = (
 )
 ```
 
-The concept behind this method is to write the full pipeline that you need to transform your data, in one stream of code.
+The concept behind this approach is to write the full pipeline that you need to transform your data, in one stream of code.
 
 You don't need any particular extra library, it is just a philosophy of how to write your pandas code. 
 
@@ -50,10 +50,10 @@ But let's be honest, there are also a few downsides:
 The idea behind this repository is to share chunks of code that are easy to browse, and running tests via GitHub Actions 
 to make sure the code is working with the lasest pandas version as well as some older versions.
 
-With the chaining method you will use `numpy` and `pandas` functions that you may not be familiar with (e.g., `where`, `select`, `query`, `pipe`, `filter`, ...),
+With the method chaining you will use `numpy` and `pandas` functions that you may not be familiar with (e.g., `where`, `select`, `query`, `pipe`, `filter`, ...),
 because you could do equivalent operations that are more intuitive when you are allowed to save-and-modify the dataframe multiple times.
 Therefore the purpose of this repository is to provide a reference for the most common operations that are key to perform the data
-manipulation under the chaining method.
+manipulation under the method chaining.
 
 You may wonder: *"Why didn't I use a Jupyter notebooks?"* 
 Here a few reasons:
@@ -67,7 +67,7 @@ Here a few reasons:
 The code in the `tests/` is run on all pandas version from 1.1 to the latest. The latest version is bumped by [dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/about-dependabot-version-updates),
 while for previous versions all the minor releases are tested to the latest bug fix, e.g., `1.1.5`, `1.2.5`, etc.
 
-Earlier versions of `pandas<1.1` (July 28, 2020) are not tested because they don't support anymore what I believe are basic functionalities for the chaining method,
+Earlier versions of `pandas<1.1` (July 28, 2020) are not tested because they don't support anymore what I believe are basic functionalities for the method chaining,
 and I don't want to downgrade some useful functionalities to maintain compatibility with a 4+ years old version of the code.
 
 ## Chunks of code
