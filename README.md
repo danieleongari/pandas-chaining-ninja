@@ -14,7 +14,7 @@ df = (
 #    .query("column2 > 0") # DEBUG: filter rows on stricter condition
     .pipe(lambda dfx: print(f"Number of rows AFTER query: {len(dfx)}") or dfx)
     .assign(columnSum = lambda x: x["column1"] + x["column2"]) # Create new column
-    .drop_duplicated(subset=["columnSum"]) # Drop rows having the same sum
+    .drop_duplicates(subset=["columnSum"]) # Drop rows having the same sum
     .pipe(lambda dfx: display(dfx) or dfx) # DEBUG: display the dataframe
     .assign(column3 = lambda x: x["column3"].apply(mycustomfunc)) # Apply a custom function
     .melt(id_vars=["column1", "column2"], value_vars=["column3", "column4"]) # Melt the dataframe
