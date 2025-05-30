@@ -1,6 +1,8 @@
 # Pandas Chaining Ninja
 ![](header_image.jpg)
 
+🔥 [Posted on Reddit r/datascience](https://www.reddit.com/r/datascience/comments/1h7j7ry/the_method_chaining_is_the_best_way_to_write/): 100k+ views
+
 ## What is the *Pandas Method Chaining* approach?
 ```python
 def mycustomfunc(xxx):
